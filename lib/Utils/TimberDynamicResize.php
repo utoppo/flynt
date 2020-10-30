@@ -70,11 +70,29 @@ class TimberDynamicResize
         }
     }
 
+    public function generateDynamicImageUrl(
+        $src,
+        $w = null,
+        $h = null,
+        $crop = null,
+        $force = false
+    ) {
+        $uploadDir = wp_get_upload_dir();
+        var_dump($uploadDir);
+        die();
+        if (is_null($w) && is_null($h)) {
+            $newSrc = str_replace($uploadDir['baseurl'], $uploadDir['baseurl'] . '/resized', $src);
+        }
+    }
+
     protected function addHooks()
     {
         add_action('timber/twig/filters', function ($twig) {
             $twig->addFilter(
                 new TwigFilter('resizeDynamic', [$this, 'resizeDynamic'])
+            );
+            $twig->addFilter(
+                new TwigFilter('generateRiasUrl', [$this, 'generateRiasUrl'])
             );
             return $twig;
         });
@@ -128,6 +146,22 @@ class TimberDynamicResize
     {
         $uploadDir = wp_upload_dir();
         return $uploadDir['basedir'];
+    }
+
+    public function generateRiasUrl(
+        $src,
+        $w = null,
+        $h = null,
+        $crop = 'default'
+    ) {
+        $resizeOp = new Resize($w ?? '{width}', $h ?? '{height}', $crop);
+        $fileinfo = pathinfo($src);
+        $resizedUrl = $resizeOp->filename(
+            $fileinfo['dirname'] . '/' . $fileinfo['filename'],
+            $fileinfo['extension']
+        );
+
+        return $this->addImageSeparatorToUploadUrl($resizedUrl);
     }
 
     public function resizeDynamic(
@@ -193,19 +227,19 @@ class TimberDynamicResize
             $crop = $matchedSrc[4];
         }
 
-        if ($exists) {
-            global $wpdb;
-            $tableName = $this->getTableName();
-            $resizedImage = $wpdb->get_row(
-                $wpdb->prepare("SELECT * FROM {$tableName} WHERE width = %d AND height = %d AND crop = %s", [
-                    $w,
-                    $h,
-                    $crop,
-                ])
-            );
-        }
+        // if ($exists) {
+        //     global $wpdb;
+        //     $tableName = $this->getTableName();
+        //     $resizedImage = $wpdb->get_row(
+        //         $wpdb->prepare("SELECT * FROM {$tableName} WHERE width = %d AND height = %d AND crop = %s", [
+        //             $w,
+        //             $h,
+        //             $crop,
+        //         ])
+        //     );
+        // }
 
-        if (empty($resizedImage)) {
+        if (!$exists) {
             global $wp_query;
             $wp_query->set_404();
             status_header(404);

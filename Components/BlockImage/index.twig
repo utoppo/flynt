@@ -9,18 +9,10 @@
           alt="{{ image.alt|e }}"
         >
       {% else %}
-        <img class="figure-image lazyload"
+        <img is="flynt-image" class="figure-image"
           src="{{ image.src|resizeDynamic(760) }}"
             srcset="{{ placeholderImage(760, 760 / image.aspect) }}"
-            data-srcset="
-              {{ image.src|resizeDynamic(1920) }} 1920w,
-              {{ image.src|resizeDynamic(1440) }} 1440w,
-              {{ image.src|resizeDynamic(1320) }} 1320w,
-              {{ image.src|resizeDynamic(1024) }} 1024w,
-              {{ image.src|resizeDynamic(860) }} 860w,
-              {{ image.src|resizeDynamic(760) }} 760w,
-              {{ image.src|resizeDynamic(375) }} 375w"
-            data-sizes="auto"
+            data-src="{{ image.src|generateRiasUrl(null, 0)}}"
           alt="{{ image.alt|e }}">
       {% endif %}
       {% if image.caption %}

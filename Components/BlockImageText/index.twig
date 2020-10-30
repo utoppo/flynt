@@ -7,25 +7,17 @@
       <div class="box-inner box-inner--image">
         <figure class="figure">
           {% if image.post_mime_type == 'image/svg+xml' %}
-            <img
-              class="image lazyload"
-              src="{{ placeholderImage(500, (500 * 0.75)|round) }}"
+            <img is="flynt-image"
+              class="image"
+              src="{{ image.src }}"
+              srcset="{{ placeholderImage(500, (500 * 0.75)|round) }}"
               data-src="{{ image.src }}"
               alt="{{ image.alt|e }}">
           {% else %}
-            <img class="figure-image lazyload"
+            <img class="figure-image" is="flynt-image"
               src="{{ image.src|resizeDynamic(500) }}"
               srcset="{{ placeholderImage(500, 500 / image.aspect) }}"
-              data-srcset="
-                {{ image.src|resizeDynamic(1920) }} 1920w,
-                {{ image.src|resizeDynamic(1320) }} 1320w,
-                {{ image.src|resizeDynamic(1280) }} 1280w,
-                {{ image.src|resizeDynamic(1035) }} 1035w,
-                {{ image.src|resizeDynamic(860) }} 860w,
-                {{ image.src|resizeDynamic(760) }} 760w,
-                {{ image.src|resizeDynamic(500) }} 500w,
-                {{ image.src|resizeDynamic(375) }} 375w"
-              data-sizes="auto"
+              data-src="{{ image.src|generateRiasUrl(null, 0)}}"
               alt="{{ image.alt|e }}">
             {% endif %}
           {% if image.caption %}

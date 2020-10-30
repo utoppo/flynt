@@ -4,7 +4,8 @@ import 'normalize.css/normalize.css'
 import './main.scss'
 import $ from 'jquery'
 import feather from 'feather-icons'
-import 'lazysizes'
+// import 'lazysizes'
+require('./scripts/FlyntImage')
 
 window.jQuery = $
 

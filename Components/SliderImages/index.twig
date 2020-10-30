@@ -11,16 +11,10 @@
         {% for image in images %}
           <div class="slider-item swiper-slide">
             <figure class="figure">
-              <img class="figure-image lazyload"
+              <img is="flynt-image" class="figure-image"
                 src="{{ image.src|resizeDynamic(0, 540) }}"
                 srcset="{{ placeholderImage(image.aspect * 540, 540) }}"
-                data-srcset="
-                  {{ image.src|resizeDynamic(0, 1080) }} {{ (image.aspect * 1080)|round }}w,
-                  {{ image.src|resizeDynamic(0, 860) }} {{ (image.aspect * 860)|round }}w,
-                  {{ image.src|resizeDynamic(0, 540) }} {{ (image.aspect * 540)|round }}w,
-                  {{ image.src|resizeDynamic(0, 385) }} {{ (image.aspect * 385)|round }}w,
-                  {{ image.src|resizeDynamic(0, 250) }} {{ (image.aspect * 250)|round }}w"
-                data-sizes="auto"
+                data-src="{{ image.src|generateRiasUrl(null, 0)}}"
                 alt="{{ image.alt|e }}">
               {% if image.caption %}
                 <figcaption class="figure-caption">{{ image.caption|e }}</figcaption>
