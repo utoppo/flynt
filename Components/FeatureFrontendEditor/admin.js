@@ -70,6 +70,16 @@ function init () {
     prepareLinks()
   }
 
+  function prepareLinks () {
+    const links = document.querySelectorAll('a[href]')
+    links.forEach((link) => {
+      const href = link.getAttribute('href')
+      if (href.startsWith('https') || href.startsWith('http')) {
+        link.setAttribute('target', '_blank')
+      }
+    })
+  }
+
   function setFrontendEditingDataAttributes (document) {
     document.documentElement.setAttribute('data-frontend-editing', true)
   }

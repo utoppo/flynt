@@ -32,7 +32,7 @@ function userCanEditPost()
 
 
 add_action('admin_bar_menu', function ($wp_admin_bar) {
-    if (!userCanEditPost() || is_admin()) {
+    if (!userCanEditPost() || is_admin() || !is_admin_bar_showing()) {
         return;
     }
 

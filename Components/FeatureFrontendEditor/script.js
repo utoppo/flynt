@@ -1,4 +1,4 @@
-/* global DOMParser */
+/* global MutationObserver, DOMParser */
 import { buildRefs } from '@/assets/scripts/helpers.js'
 
 export default function (el) {
@@ -10,6 +10,9 @@ export default function (el) {
   const frontendEditAdminBarButton = getAdminbarButton(refs, isSidebarOpen)
   frontendEditAdminBarButton.addEventListener('click', toggleSidebar)
 
+  window.addEventListener('resize', setDocumentElementMargin, { passive: true })
+  initSidebarResizeMutationObserver()
+
   function toggleSidebar () {
     const isAriaHidden = (refs.editSidebar.getAttribute('aria-hidden') === 'true')
 
@@ -19,13 +22,40 @@ export default function (el) {
 
     const url = new URL(window.location.href)
     if (isAriaHidden) {
+      setDocumentElementMargin()
       url.searchParams.set('frontendEditorVisible', isAriaHidden)
       window.history.replaceState({}, '', url)
       el.focus()
     } else {
+      resetDocumentElementMargin()
       url.searchParams.delete('frontendEditorVisible')
       window.history.replaceState({}, '', url)
     }
+  }
+
+  function initSidebarResizeMutationObserver () {
+    const observer = new MutationObserver(() => {
+      setDocumentElementMargin()
+    })
+
+    observer.observe(refs.editSidebar, {
+      attributes: true,
+      attributeFilter: ['style']
+    })
+  }
+
+  function setDocumentElementMargin () {
+    const isDesktopMediaQuery = window.matchMedia('(min-width: 1024px)')
+    if (isDesktopMediaQuery.matches) {
+      const newWidth = refs.editSidebar.offsetWidth
+      document.documentElement.style.marginInlineStart = `min(${newWidth}px, 100%)`
+    } else {
+      resetDocumentElementMargin()
+    }
+  }
+
+  function resetDocumentElementMargin () {
+    document.documentElement.style.removeProperty('margin-inline-start')
   }
 
   function getAdminbarButton (refs, isSidebarOpen) {

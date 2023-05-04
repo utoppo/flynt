@@ -29,12 +29,16 @@ flynt-component[name='FeatureFrontendEditor'] {
   }
 
   aside {
-    background-color: var(--color-background);
+    background-color: #fff;
     block-size: calc(100vh - var(--wp-admin--admin-bar--height));
-    box-shadow: 10px 0 10px hsl(220deg 13% 15% / 20%);
+    box-shadow: 5px 0 10px hsla(0, 0%, 0%, 0.2);
     inline-size: min(600px, 100%);
     inset: var(--wp-admin--admin-bar--height) auto auto 0;
+    max-inline-size: min(600px, 100%);
+    min-inline-size: 300px;
+    overflow: scroll;
     position: fixed;
+    resize: horizontal;
     z-index: 999;
 
     &[aria-hidden='true'] {
@@ -62,24 +66,49 @@ flynt-component[name='FeatureFrontendEditor'] {
 }
 
 [data-sidebar-visible="true"] {
-  margin-inline-start: min(600px, 100%);
+  @media (min-width: 1024px){
+    margin-inline-start: min(600px, 100%);
+  }
 }
 
 // stylelint-disable-next-line selector-max-id
-#wpadminbar #wp-admin-bar-frontend-editing > .ab-item {
-  background-color: #2271b1;
-  color: #fff;
-  cursor: pointer;
+#wpadminbar #wp-admin-bar-frontend-editing {
+  display: block;
 
   // stylelint-disable-next-line selector-max-id
-  &:hover {
-    background-color: #135e96;
+  > .ab-item {
+    background-color: #2271b1;
     color: #fff;
-  }
+    cursor: pointer;
 
-  // stylelint-disable-next-line selector-max-id
-  &::before {
-    content: "\f115";
-    inset-block-start: 2px;
+    @media (max-width: 782px){
+      block-size: 46px;
+      inline-size: 52px;
+      overflow: hidden;
+      text-indent: -999px;
+      white-space: nowrap;
+    }
+
+    // stylelint-disable-next-line selector-max-id
+    &:hover {
+      background-color: #135e96;
+      color: #fff;
+    }
+
+    // stylelint-disable-next-line selector-max-id
+    &::before {
+      align-items: center;
+      content: "\f115";
+      inset-block-start: 2px;
+
+      @media (max-width: 782px){
+        block-size: 100%;
+        display: grid;
+        font-size: 32px;
+        inline-size: 100%;
+        justify-content: center;
+        text-indent: 0;
+      }
+    }
   }
 }
