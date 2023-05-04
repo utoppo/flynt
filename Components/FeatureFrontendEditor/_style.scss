@@ -1,0 +1,85 @@
+flynt-component[name='FeatureFrontendEditor'] {
+  .loading-indicator {
+    display: none;
+    inset: 0;
+    place-content: center;
+    pointer-events: none;
+    position: absolute;
+
+    .spinner {
+      --spinner-size: 25px;
+      background-repeat: no-repeat;
+      background-size: var(--spinner-size) var(--spinner-size);
+      block-size: var(--spinner-size);
+      display: inline-block;
+      inline-size: var(--spinner-size);
+      opacity: .7;
+      vertical-align: middle;
+    }
+  }
+
+  &[data-is-iframe-loading='true'] {
+    iframe {
+      opacity: 0;
+    }
+
+    .loading-indicator {
+      display: grid;
+    }
+  }
+
+  aside {
+    background-color: var(--color-background);
+    block-size: calc(100vh - var(--wp-admin--admin-bar--height));
+    box-shadow: 10px 0 10px hsl(220deg 13% 15% / 20%);
+    inline-size: min(600px, 100%);
+    inset: var(--wp-admin--admin-bar--height) auto auto 0;
+    position: fixed;
+    z-index: 999;
+
+    &[aria-hidden='true'] {
+      display: none;
+    }
+  }
+
+  iframe {
+    block-size: 100%;
+    border: 0;
+    inline-size: 100%;
+  }
+}
+
+[data-post-is-saving="true"] {
+  cursor: wait;
+
+  * {
+    pointer-events: none;
+  }
+
+  .pageWrapper {
+    opacity: 0.5;
+  }
+}
+
+[data-sidebar-visible="true"] {
+  margin-inline-start: min(600px, 100%);
+}
+
+// stylelint-disable-next-line selector-max-id
+#wpadminbar #wp-admin-bar-frontend-editing > .ab-item {
+  background-color: #2271b1;
+  color: #fff;
+  cursor: pointer;
+
+  // stylelint-disable-next-line selector-max-id
+  &:hover {
+    background-color: #135e96;
+    color: #fff;
+  }
+
+  // stylelint-disable-next-line selector-max-id
+  &::before {
+    content: "\f115";
+    inset-block-start: 2px;
+  }
+}

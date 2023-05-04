@@ -1,0 +1,27 @@
+[data-frontend-editing="true"] {
+  .block-editor .interface-interface-skeleton {
+    inset-block-start: 0;
+  }
+
+  // stylelint-disable-next-line selector-max-id
+  #wpbody {
+    padding-block-start: 59px !important;
+  }
+
+  .major-publishing-actions-hidden {
+    background-color: #fff !important;
+    border-block-end: 1px solid #C3C4C7;
+    border-radius: 0 !important;
+    inline-size: calc(100% - 20px);
+    inset: 0 0 auto auto;
+    margin: 0 !important;
+    padding: 5px 10px !important;
+    position: fixed;
+    z-index: 999;
+
+    // stylelint-disable-next-line selector-max-id
+    > *:not(#publishing-action){
+      display: none;
+    }
+  }
+}
