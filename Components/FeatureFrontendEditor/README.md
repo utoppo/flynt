@@ -1,3 +1,3 @@
 # Feature: Frontend Editor
 
-Displays a button in the admin to open an frontend editor based thats holds the backed editor inside an iFrame.
+Displays a button in the adminbar at the frontend to toggle a frontend editor (the backed editor inside an iFrame).
