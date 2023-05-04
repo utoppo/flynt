@@ -39,7 +39,7 @@ flynt-component[name='FeatureFrontendEditor'] {
     overflow: scroll;
     position: fixed;
     resize: horizontal;
-    z-index: 999;
+    z-index: 9999;
 
     &[aria-hidden='true'] {
       display: none;
