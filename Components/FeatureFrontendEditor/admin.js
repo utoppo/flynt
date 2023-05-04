@@ -3,9 +3,10 @@ function init () {
   const searchParams = new URL(window.location).searchParams
   const isEditAction = (searchParams.get('action') === 'edit')
   const isPost = (searchParams.get('post') !== null)
+  const isRevision = (searchParams.get('revision') !== null)
   const isIframe = (window.location !== window.parent.location)
 
-  if (isEditAction && isPost && isIframe) {
+  if ((isEditAction && isPost && isIframe) || (isRevision && isIframe)) {
     hideAdminBar()
     setFrontendEditingDataAttributes(document)
     const isBlockEditor = (document.querySelector('.block-editor') !== null)
@@ -65,6 +66,8 @@ function init () {
     buttonSubmit.addEventListener('click', () => {
       sendPostIsSavingMessage()
     })
+
+    prepareLinks()
   }
 
   function setFrontendEditingDataAttributes (document) {
