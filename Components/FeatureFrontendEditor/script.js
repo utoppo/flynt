@@ -92,7 +92,7 @@ export default function (el) {
       const url = new URL(window.location.href)
       fetch(url)
         .then((res) => res.text())
-        .then((html) => replaceDynamicContent(html))
+        .then((text) => replaceDynamicContent(text))
         .then(() => {
           const iFramePageYOffset = parseInt(document.documentElement.getAttribute('data-iframe-page-y-offset'))
           refs.iFrame.contentWindow.scrollTo(0, iFramePageYOffset)
@@ -111,12 +111,13 @@ export default function (el) {
     document.documentElement.setAttribute('data-iframe-page-y-offset', iFramePageYOffset)
   }
 
-  function replaceDynamicContent (html) {
-    if (!html) return
-    const mainContent = document.querySelector('.mainContent')
+  async function replaceDynamicContent (text) {
+    if (!text) return
+
+    const currentNodes = document.querySelector('.mainContent')
     const parser = new DOMParser()
-    const doc = parser.parseFromString(html, 'text/html')
-    const content = doc.querySelector('.mainContent')
-    mainContent.replaceChildren(...content.children)
+    const futureHtml = parser.parseFromString(text, 'text/html')
+    const futureNodes = futureHtml.querySelector('.mainContent')
+    currentNodes.replaceChildren(...futureNodes.children)
   }
 }
