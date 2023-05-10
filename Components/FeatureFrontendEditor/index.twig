@@ -1,8 +1,16 @@
 <flynt-component load:on="load" id="FeatureFrontendEditor" name="FeatureFrontendEditor" data-is-iframe-loading="true">
+  <script type="application/json">{{ jsonData|json_encode }}</script>
   <aside data-ref="editSidebar" id="editSidebar-{{ post.id }}" aria-hidden="{{ isSidebarOpen ? 'false' : 'true' }}">
     <div class="loading-indicator">
       <span class="spinner is-active" style="background-image: url('{{ spinnerUrl }}')"></span>
     </div>
-    <iframe data-ref="iFrame" loading="lazy" title="{{ __('Frontend Editor Content', 'flynt') }}" src="{{ function('get_edit_post_link') }}"></iframe>
+    <iframe class="iFrame-editor" data-ref="iFrame" loading="lazy" title="{{ __('Frontend Editor Content', 'flynt') }}" src="{{ function('get_edit_post_link') }}"></iframe>
   </aside>
+  <iframe
+    class="iFrame-content"
+    data-ref="iFrameContent"
+    loading="lazy"
+    title="{{ __('Frontend Editor Preview', 'flynt') }}"
+    srcdoc=""
+  ></iframe>
 </flynt-component>

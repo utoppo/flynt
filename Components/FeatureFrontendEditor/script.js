@@ -1,8 +1,9 @@
 /* global MutationObserver, DOMParser */
-import { buildRefs } from '@/assets/scripts/helpers.js'
+import { buildRefs, getJSON } from '@/assets/scripts/helpers.js'
 
 export default function (el) {
   const refs = buildRefs(el)
+  const data = getJSON(el)
   const searchParams = new URL(document.location).searchParams
   const isSidebarOpen = (searchParams.get('frontendEditorVisible') === 'true')
   document.documentElement.setAttribute('data-sidebar-visible', isSidebarOpen)
@@ -13,6 +14,8 @@ export default function (el) {
   window.addEventListener('resize', setDocumentElementMargin, { passive: true })
   initSidebarResizeMutationObserver()
 
+  // Swap content for iframe if the sidebar is open
+  swapWithIframe(isSidebarOpen)
   function toggleSidebar () {
     const isAriaHidden = (refs.editSidebar.getAttribute('aria-hidden') === 'true')
 
@@ -31,6 +34,8 @@ export default function (el) {
       url.searchParams.delete('frontendEditorVisible')
       window.history.replaceState({}, '', url)
     }
+    // Swap content for iframe when sidebar is toggled
+    swapWithIframe(isAriaHidden)
   }
 
   function initSidebarResizeMutationObserver () {
@@ -49,6 +54,7 @@ export default function (el) {
     if (isDesktopMediaQuery.matches) {
       const newWidth = refs.editSidebar.offsetWidth
       document.documentElement.style.marginInlineStart = `min(${newWidth}px, 100%)`
+      document.documentElement.style.setProperty('--sidebar-width', `${newWidth}px`)
     } else {
       resetDocumentElementMargin()
     }
@@ -119,5 +125,27 @@ export default function (el) {
     const futureHtml = parser.parseFromString(text, 'text/html')
     const futureNodes = futureHtml.querySelector('.mainContent')
     currentNodes.replaceChildren(...futureNodes.children)
+    updateIframe()
+  }
+
+  function swapWithIframe (shouldShow) {
+    if (shouldShow) {
+      updateIframe()
+      document.querySelector('.pageWrapper').classList.add('visuallyHidden')
+      refs.iFrameContent.classList.remove('visuallyHidden')
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.querySelector('.pageWrapper').classList.remove('visuallyHidden')
+      refs.iFrameContent.classList.add('visuallyHidden')
+      document.body.style.overflow = null
+    }
+  }
+
+  function updateIframe () {
+    fetch(`${data.restUrl}frontend-editor/post/${data.postId}`)
+      .then((res) => res.json())
+      .then((json) => {
+        refs.iFrameContent.srcdoc = JSON.parse(json).__html
+      })
   }
 }

@@ -46,10 +46,20 @@ flynt-component[name='FeatureFrontendEditor'] {
     }
   }
 
-  iframe {
+  .iFrame-editor {
     block-size: 100%;
     border: 0;
     inline-size: 100%;
+  }
+
+  .iFrame-content {
+    background-color: var(--color-background);
+    block-size: calc(100vh - var(--wp-admin--admin-bar--height));
+    overflow-y: auto;
+    resize: horizontal;
+    opacity: 1;
+    margin-inline: auto;
+    inline-size: calc(100vw - var(--sidebar-width, 600px));
   }
 }
 
@@ -66,7 +76,7 @@ flynt-component[name='FeatureFrontendEditor'] {
 }
 
 [data-sidebar-visible="true"] {
-  @media (min-width: 1024px){
+  @media (min-width: 1024px) {
     margin-inline-start: min(600px, 100%);
   }
 }
@@ -81,7 +91,7 @@ flynt-component[name='FeatureFrontendEditor'] {
     color: #fff;
     cursor: pointer;
 
-    @media (max-width: 782px){
+    @media (max-width: 782px) {
       block-size: 46px;
       inline-size: 52px;
       overflow: hidden;
@@ -101,7 +111,7 @@ flynt-component[name='FeatureFrontendEditor'] {
       content: "\f115";
       inset-block-start: 2px;
 
-      @media (max-width: 782px){
+      @media (max-width: 782px) {
         block-size: 100%;
         display: grid;
         font-size: 32px;
