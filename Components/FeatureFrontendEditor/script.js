@@ -5,7 +5,11 @@ export default function (el) {
   const refs = buildRefs(el)
   const data = getJSON(el)
   const searchParams = new URL(document.location).searchParams
+  const isAdminBarHidden = (searchParams.get('hideAdminBar') === 'true')
+  if (isAdminBarHidden) return
+
   const isSidebarOpen = (searchParams.get('frontendEditorVisible') === 'true')
+
   document.documentElement.setAttribute('data-sidebar-visible', isSidebarOpen)
 
   const frontendEditAdminBarButton = getAdminbarButton(refs, isSidebarOpen)
@@ -106,6 +110,11 @@ export default function (el) {
         })
     }
 
+    if (event.data === 'showPostPreview') {
+      console.log(event.data)
+      refs.iFrameContent.src = data.previewLink
+    }
+
     if (event.data === 'frontendEditingIFrameIsLoaded') {
       el.setAttribute('data-is-iframe-loading', 'false')
     }
@@ -142,10 +151,10 @@ export default function (el) {
   }
 
   function updateIframe () {
-    fetch(`${data.restUrl}frontend-editor/post/${data.postId}`)
-      .then((res) => res.json())
-      .then((json) => {
-        refs.iFrameContent.srcdoc = JSON.parse(json).__html
-      })
+    const currentUrl = new URL(window.location.href)
+    currentUrl.searchParams.set('hideAdminBar', 'true')
+    currentUrl.searchParams.set('preview', 'true')
+    currentUrl.searchParams.delete('frontendEditorVisible')
+    refs.iFrameContent.src = currentUrl
   }
 }

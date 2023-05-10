@@ -7,10 +7,10 @@
     <iframe class="iFrame-editor" data-ref="iFrame" loading="lazy" title="{{ __('Frontend Editor Content', 'flynt') }}" src="{{ function('get_edit_post_link') }}"></iframe>
   </aside>
   <iframe
+    name="previewFrame"
     class="iFrame-content"
     data-ref="iFrameContent"
     loading="lazy"
     title="{{ __('Frontend Editor Preview', 'flynt') }}"
-    srcdoc=""
   ></iframe>
 </flynt-component>

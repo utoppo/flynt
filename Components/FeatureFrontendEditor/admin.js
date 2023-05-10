@@ -47,8 +47,15 @@ function init () {
     const buttonMoveToTrash = document.querySelector('#delete-action')
     buttonMoveToTrash && buttonMoveToTrash.remove()
 
-    const previewAction = document.getElementById('preview-action')
-    previewAction && previewAction.remove()
+    //TODO handle preview link
+    const previewButton = document.getElementById('post-preview')
+    previewButton.addEventListener('click', (e) => {
+      e.preventDefault()
+      const href = previewButton.href
+      const url = new URL(href)
+      url.searchParams.set('hideAdminBar', 'true')
+      previewButton.setAttribute('target', 'previewFrame')
+    })
 
     const postStuff = document.getElementById('poststuff')
     const publishFooter = document.getElementById('major-publishing-actions')
@@ -71,7 +78,7 @@ function init () {
   }
 
   function prepareLinks () {
-    const links = document.querySelectorAll('a[href]')
+    const links = document.querySelectorAll('a[href]:not(#post-preview)')
     links.forEach((link) => {
       const href = link.getAttribute('href')
       if (href.startsWith('https') || href.startsWith('http')) {
