@@ -18,6 +18,7 @@ add_filter('Flynt/addComponentData?name=FeatureFrontendEditor', function ($data)
     $nonce = wp_create_nonce('post_preview_' . $postID);
     $query_args['preview_id'] = $postID;
     $query_args['preview_nonce'] = $nonce;
+    $query_args['hideAdminBar'] = "true";
     $preview_link = get_preview_post_link($postID, $query_args);
 
     $data['jsonData'] = [

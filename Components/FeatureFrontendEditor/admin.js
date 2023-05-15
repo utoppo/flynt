@@ -47,21 +47,24 @@ function init () {
     const buttonMoveToTrash = document.querySelector('#delete-action')
     buttonMoveToTrash && buttonMoveToTrash.remove()
 
-    //TODO handle preview link
     const previewButton = document.getElementById('post-preview')
+
+    previewButton.target = 'previewFrame'
     previewButton.addEventListener('click', (e) => {
       e.preventDefault()
-      const href = previewButton.href
-      const url = new URL(href)
-      url.searchParams.set('hideAdminBar', 'true')
-      previewButton.setAttribute('target', 'previewFrame')
+      sendPreviewUrlMessage()
     })
 
     const postStuff = document.getElementById('poststuff')
     const publishFooter = document.getElementById('major-publishing-actions')
-    if (postStuff && publishFooter) {
-      publishFooter.classList.add('major-publishing-actions-hidden')
-      postStuff.appendChild(publishFooter)
+    if (postStuff) {
+      if (previewButton) {
+        publishFooter.prepend(previewButton)
+      }
+      if (publishFooter) {
+        publishFooter.classList.add('major-publishing-actions-hidden')
+        postStuff.appendChild(publishFooter)
+      }
     }
 
     const messageSuccess = document.querySelector('#message.updated')
@@ -97,6 +100,10 @@ function init () {
 
   function sendReloadParentPageMessage () {
     window.parent.postMessage('reloadParentPage', '*')
+  }
+
+  function sendPreviewUrlMessage (url) {
+    window.parent.postMessage('handlePostPreview', '*')
   }
 }
 

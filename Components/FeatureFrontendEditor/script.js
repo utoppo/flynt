@@ -6,7 +6,11 @@ export default function (el) {
   const data = getJSON(el)
   const searchParams = new URL(document.location).searchParams
   const isAdminBarHidden = (searchParams.get('hideAdminBar') === 'true')
-  if (isAdminBarHidden) return
+
+  if (isAdminBarHidden) {
+    document.getElementById('wpadminbar').remove()
+    return
+  }
 
   const isSidebarOpen = (searchParams.get('frontendEditorVisible') === 'true')
 
@@ -110,9 +114,8 @@ export default function (el) {
         })
     }
 
-    if (event.data === 'showPostPreview') {
-      console.log(event.data)
-      refs.iFrameContent.src = data.previewLink
+    if (event.data === 'handlePostPreview') {
+       updateIframe(data.previewLink)
     }
 
     if (event.data === 'frontendEditingIFrameIsLoaded') {
@@ -150,11 +153,10 @@ export default function (el) {
     }
   }
 
-  function updateIframe () {
+  function updateIframe (url) {
     const currentUrl = new URL(window.location.href)
     currentUrl.searchParams.set('hideAdminBar', 'true')
-    currentUrl.searchParams.set('preview', 'true')
-    currentUrl.searchParams.delete('frontendEditorVisible')
-    refs.iFrameContent.src = currentUrl
+    refs.iFrameContent.src = url ?? currentUrl
   }
+
 }
