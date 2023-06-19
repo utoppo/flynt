@@ -64,6 +64,7 @@ class ComponentManager
      *
      * @param string $componentName The name of the component.
      * @param string $componentPath The path to the component.
+     * @param boolean $isFromChildTheme Is the component located inside a child theme.
      *
      * @return boolean
      */
