@@ -42,8 +42,8 @@ class Component
      *
      * @param string $name The name of the component.
      * @param string $path The path to the component.
-     * @param boolean $isRegistered Is the component registered.    
      * @param boolean $isFromChildTheme Is the component located inside a child theme.
+     * @param boolean $isRegistered Is the component registered.
      *
      * @return void
      */
