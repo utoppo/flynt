@@ -24,25 +24,34 @@ class Component
     protected $path;
 
     /**
+     * Is the component located inside a child theme.
+     *
+     * @var boolean
+     */
+    protected $isFromChildTheme;
+
+    /**
      * Is the component registered.
      *
      * @var boolean
      */
     protected $isRegistered;
-    
+
     /**
      * Constructor.
      *
      * @param string $name The name of the component.
      * @param string $path The path to the component.
-     * @param boolean $isRegistered Is the component registered.
+     * @param boolean $isRegistered Is the component registered.    
+     * @param boolean $isFromChildTheme Is the component located inside a child theme.
      *
      * @return void
      */
-    public function __construct(string $name, string $path, bool $isRegistered = false)
+    public function __construct(string $name, string $path, bool $isFromChildTheme = false, bool $isRegistered = false)
     {
         $this->setName($name);
         $this->setPath($path);
+        $this->setIsFromChildTheme($isFromChildTheme);
         $this->setIsRegistered($isRegistered);
     }
 
@@ -88,6 +97,28 @@ class Component
     public function setPath(string $path)
     {
         $this->path = $path;
+    }
+
+    /**
+     * Check if a component is located inside a child theme.
+     *
+     * @return boolean
+     */
+    public function isFromChildTheme()
+    {
+        return $this->isFromChildTheme;
+    }
+
+    /**
+     * Set wether a component is located inside a child theme.
+     *
+     * @param boolean $isFromChildTheme Is the component located inside a child theme.
+     *
+     * @return void
+     */
+    public function setIsFromChildTheme(bool $isFromChildTheme)
+    {
+        $this->isFromChildTheme = $isFromChildTheme;
     }
 
     /**
