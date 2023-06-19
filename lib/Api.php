@@ -15,27 +15,30 @@ class Api
      *
      * @param string $componentName The name of the component.
      * @param string $componentPath The path to the component.
+     * @param boolean $isFromChildTheme Is the component located inside a child theme.
      *
      * @return void
      */
-    public static function registerComponent(string $componentName, ?string $componentPath = null)
+    public static function registerComponent(string $componentName, ?string $componentPath = null, ?bool $isFromChildTheme = false)
     {
         $componentManager = ComponentManager::getInstance();
-        $componentManager->registerComponent($componentName, $componentPath);
+        $componentManager->registerComponent($componentName, $componentPath, $isFromChildTheme);
     }
 
     /**
      * Register components from a path.
      *
      * @param string $componentBasePath The path to the components.
+     * @param boolean $isFromChildTheme Is the component located inside a child theme.
      *
      * @return void
      */
-    public static function registerComponentsFromPath(string $componentBasePath)
+    public static function registerComponentsFromPath(string $componentBasePath, ?bool $isFromChildTheme = false)
     {
+        // Temp wp_die('fromchildTheme: '.var_dump($fromChildTheme)).
         foreach (glob("{$componentBasePath}/*", GLOB_ONLYDIR) as $componentPath) {
             $componentName = basename($componentPath);
-            self::registerComponent($componentName, $componentPath);
+            self::registerComponent($componentName, $componentPath, $isFromChildTheme);
         }
     }
 
