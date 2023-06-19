@@ -28,13 +28,15 @@ class Component
      *
      * @param string $name The name of the component.
      * @param string $path The path to the component.
+     * @param boolean $isRegistered Is the component registered.
      *
      * @return void
      */
-    public function __construct(string $name, string $path)
+    public function __construct(string $name, string $path, bool $isRegistered = false)
     {
         $this->setName($name);
         $this->setPath($path);
+        $this->setIsRegistered($isRegistered);
     }
 
     /**
@@ -79,5 +81,27 @@ class Component
     public function setPath(string $path)
     {
         $this->path = $path;
+    }
+
+    /**
+     * Check if a component is registered.
+     *
+     * @return boolean
+     */
+    public function isRegistered()
+    {
+        return $this->isRegistered;
+    }
+
+    /**
+     * Set wether a component is registered.
+     *
+     * @param boolean $isRegistered Is the component registered.
+     *
+     * @return void
+     */
+    public function setIsRegistered(bool $isRegistered)
+    {
+        $this->isRegistered = $isRegistered;
     }
 }

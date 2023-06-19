@@ -118,7 +118,7 @@ class ComponentManager
      */
     public function getComponentDirPath(string $componentName)
     {
-        $dirPath = $this->get($componentName);
+        $dirPath = $this->get($componentName)->getPath();
 
         // Check if dir exists.
         if (!is_dir($dirPath)) {
@@ -139,7 +139,8 @@ class ComponentManager
     protected function add(string $name, string $path)
     {
         $component = new Component($name, $path);
-        $this->components[$component->getName()] = $component->getPath();
+        $this->components[$component->getName()] = $component;
+        $this->components[$component->getName()]->setIsRegistered(true);
         return true;
     }
 
@@ -180,7 +181,11 @@ class ComponentManager
      */
     public function getAll()
     {
-        return $this->components;
+        $allComponents = [];
+        foreach ($this->components as $key => $value) {
+            $allComponents[$key] = $value->getPath();
+        }
+        return $allComponents;
     }
 
     /**
@@ -202,7 +207,12 @@ class ComponentManager
      */
     public function isRegistered(string $componentName)
     {
-        return array_key_exists($componentName, $this->components);
+        foreach ($this->components as $component) {
+            if ($component->getName() === $componentName) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -213,8 +223,8 @@ class ComponentManager
     public function getComponentsWithScript()
     {
         $componentsWithScripts = [];
-        foreach ($this->components as $componentName => $componentPath) {
-            $componentPath = str_replace('/dist/', '/', $componentPath);
+        foreach ($this->components as $componentName => $component) {
+            $componentPath = str_replace('/dist/', '/', $component->getPath());
             $relativeComponentPath = trim(str_replace(get_template_directory() . '/Components/', '', $componentPath), '/');
             if (file_exists($componentPath . '/script.js')) {
                 $componentsWithScripts[$componentName] = $relativeComponentPath;
