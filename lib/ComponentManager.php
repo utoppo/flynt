@@ -68,7 +68,7 @@ class ComponentManager
      *
      * @return boolean
      */
-    public function registerComponent(string $componentName, ?string $componentPath = null,  ?bool $isFromChildTheme = false)
+    public function registerComponent(string $componentName, ?string $componentPath = null, ?bool $isFromChildTheme = false)
     {
         // Check if component already registered.
         if ($this->isRegistered($componentName)) {
