@@ -28,6 +28,7 @@ add_action('wp_enqueue_scripts', function () {
     wp_localize_script('Flynt/assets/main', 'FlyntData', [
         'componentsWithScript' => ComponentManager::getInstance()->getComponentsWithScript(),
         'templateDirectoryUri' => get_template_directory_uri(),
+        'styleSheetDirectoryUri' => get_stylesheet_directory_uri(),
     ]);
 
     wp_enqueue_style('Flynt/assets/main', Asset::requireUrl('assets/main.scss'), [], null);
@@ -54,6 +55,7 @@ add_action('admin_enqueue_scripts', function () {
     wp_localize_script('Flynt/assets/admin', 'FlyntData', [
         'componentsWithScript' => ComponentManager::getInstance()->getComponentsWithScript(),
         'templateDirectoryUri' => get_template_directory_uri(),
+        'styleSheetDirectoryUri' => get_stylesheet_directory_uri(),
     ]);
 
     wp_enqueue_style('Flynt/assets/admin', Asset::requireUrl('assets/admin.scss'), [], null);
