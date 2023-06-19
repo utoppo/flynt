@@ -67,7 +67,7 @@ class ComponentManager
      *
      * @return boolean
      */
-    public function registerComponent(string $componentName, ?string $componentPath = null)
+    public function registerComponent(string $componentName, ?string $componentPath = null,  ?bool $isFromChildTheme = false)
     {
         // Check if component already registered.
         if ($this->isRegistered($componentName)) {
@@ -79,7 +79,7 @@ class ComponentManager
         $componentPath = trailingslashit(apply_filters('Flynt/componentPath', $componentPath, $componentName));
 
         // Add component to internal list (array).
-        $this->add($componentName, $componentPath);
+        $this->add($componentName, $componentPath, $isFromChildTheme);
 
         do_action('Flynt/registerComponent', $componentName);
         do_action("Flynt/registerComponent?name={$componentName}", $componentName);
@@ -133,12 +133,13 @@ class ComponentManager
     *
     * @param string $name The name of the component.
     * @param string $path The path to the component.
+    * @param boolean $isFromChildTheme Is the component located inside a child theme.
     *
     * @return boolean
     */
-    protected function add(string $name, string $path)
+    protected function add(string $name, string $path, ?bool $isFromChildTheme = false)
     {
-        $component = new Component($name, $path);
+        $component = new Component($name, $path, $isFromChildTheme);
         $this->components[$component->getName()] = $component;
         $this->components[$component->getName()]->setIsRegistered(true);
         return true;
