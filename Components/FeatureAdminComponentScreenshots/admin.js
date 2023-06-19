@@ -20,9 +20,14 @@ function init () {
   }, true)
 }
 
+function getThemeUri (component) {
+  return component.isFromChildTheme ? FlyntData.styleSheetDirectoryUri : FlyntData.templateDirectoryUri
+}
+
 function showComponentScreenshot (layout, wrapper) {
   const componentName = firstToUpperCase(layout)
-  const image = `${FlyntData.templateDirectoryUri}/${FlyntComponentScreenshots.components[componentName]}/screenshot.png`
+  const component = JSON.parse(FlyntComponentScreenshots.components)[componentName]
+  const image = `${getThemeUri(component)}${component.relativePath}screenshot.png`
   const wrapperContainer = document.createElement('div')
 
   wrapperContainer.classList.add('flyntComponentScreenshot-imageWrapper')

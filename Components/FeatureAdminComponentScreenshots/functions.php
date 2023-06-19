@@ -8,10 +8,7 @@ add_action('admin_enqueue_scripts', function () {
     $componentManager = ComponentManager::getInstance();
     $templateDirectory = get_template_directory();
     $data = [
-        'templateDirectoryUri' => get_template_directory_uri(),
-        'components' => array_map(function ($componentPath) use ($templateDirectory) {
-            return str_replace($templateDirectory, '', $componentPath);
-        }, $componentManager->getAll()),
+        'components' => json_encode($componentManager->getAllWithProperties()),
     ];
     wp_localize_script('Flynt/assets/admin', 'FlyntComponentScreenshots', $data);
 });
