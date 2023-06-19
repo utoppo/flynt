@@ -2,6 +2,8 @@
 
 namespace Flynt;
 
+use Flynt\Component;
+
 /**
  * Provides a set of methods that are used to register and get
  * information about components.
@@ -136,7 +138,8 @@ class ComponentManager
     */
     protected function add(string $name, string $path)
     {
-        $this->components[$name] = $path;
+        $component = new Component($name, $path);
+        $this->components[$component->getName()] = $component->getPath();
         return true;
     }
 
