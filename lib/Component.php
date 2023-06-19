@@ -24,6 +24,13 @@ class Component
     protected $path;
 
     /**
+     * Is the component registered.
+     *
+     * @var boolean
+     */
+    protected $isRegistered;
+    
+    /**
      * Constructor.
      *
      * @param string $name The name of the component.
