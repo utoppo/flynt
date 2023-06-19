@@ -24,6 +24,13 @@ class Component
     protected $path;
 
     /**
+     * The relativePath of the component.
+     *
+     * @var string
+     */
+    protected $relativePath;
+
+    /**
      * Is the component located inside a child theme.
      *
      * @var boolean
@@ -53,6 +60,31 @@ class Component
         $this->setPath($path);
         $this->setIsFromChildTheme($isFromChildTheme);
         $this->setIsRegistered($isRegistered);
+        $this->setupRelativePath();
+    }
+
+    /**
+     * Get the theme path that belongs to the component.
+     *
+     *
+     * @return string
+     */
+    public function getThemePath()
+    {
+        return $this->isFromChildTheme() ? get_stylesheet_directory() : get_template_directory();
+    }
+
+    /**
+     * Sets up the relativePath of the component, based on its path and its theme path.
+     *
+     *
+     * @return void
+     */
+    public function setupRelativePath()
+    {
+        $componentPath = str_replace('/dist/', '/', $this->getPath());
+        $relativePath = str_replace($this->getThemePath(), '', $componentPath);
+        $this->setRelativePath($relativePath);
     }
 
     /**
@@ -107,6 +139,28 @@ class Component
     public function isFromChildTheme()
     {
         return $this->isFromChildTheme;
+    }
+
+    /**
+     * Get the relativePath of the component.
+     *
+     * @return string
+     */
+    public function getRelativePath()
+    {
+        return $this->relativePath;
+    }
+
+    /**
+     * Set the relativePath of a component.
+     *
+     * @param string $relativePath The relative Path of the component.
+     *
+     * @return void
+     */
+    public function setRelativePath(string $relativePath)
+    {
+        $this->relativePath = $relativePath;
     }
 
     /**
