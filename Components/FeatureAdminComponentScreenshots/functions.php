@@ -22,11 +22,14 @@ if (class_exists('acf')) {
         add_filter('acf/fields/flexible_content/layout_title', function ($title, $field, $layout, $i) {
             $componentManager = ComponentManager::getInstance();
             $componentName = ucfirst($layout['name']);
-            $componentPathFull = $componentManager->getComponentDirPath($componentName);
-            $componentPath = str_replace(get_template_directory(), '', $componentPathFull);
-            $templateDirectoryUri = get_template_directory_uri();
-            $componentScreenshotPath = "{$componentPathFull}/screenshot.png";
-            $componentScreenshotUrl = "{$templateDirectoryUri}/{$componentPath}/screenshot.png";
+            $component = $componentManager->get($componentName);
+
+            $componentScreenshotPath = "{$component->getPath()}screenshot.png";
+            $componentThemePath = $component->isFromChildTheme() ?  get_stylesheet_directory() : get_template_directory();
+            $componentThemeUrl = $component->isFromChildTheme() ?  get_stylesheet_directory_uri() : get_template_directory_uri();
+            $componentPath = str_replace($componentThemePath, '', $componentScreenshotPath);
+            $componentScreenshotUrl = "{$componentThemeUrl}{$componentPath}";
+
             if (is_file($componentScreenshotPath)) {
                 $newTitle = '<span class="flyntComponentScreenshot">';
                 $newTitle .= '<img class="flyntComponentScreenshot-previewImageSmall" src="' . $componentScreenshotUrl . '" loading="lazy">';
