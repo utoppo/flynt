@@ -7,7 +7,7 @@ namespace Flynt;
  * the Flynt component to be loaded inside WordPress backend and frontend.
  *
  */
-class Component
+class Component implements \JsonSerializable
 {
     /**
      * The name of the component.
@@ -61,6 +61,20 @@ class Component
         $this->setIsFromChildTheme($isFromChildTheme);
         $this->setIsRegistered($isRegistered);
         $this->setupRelativePath();
+    }
+
+    /**
+     * Get selection of component properties as JSON
+     *
+     *
+     * @return string
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'relativePath' => $this->getRelativePath(),
+            'isFromChildTheme' => $this->isFromChildTheme()
+        ];
     }
 
     /**
