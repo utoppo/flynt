@@ -37,7 +37,11 @@ class Init
     public static function loadComponents()
     {
         $basePath = get_template_directory() . '/Components';
-        Api::registerComponentsFromPath($basePath);
+        Api::registerComponentsFromPath($basePath, false);
+        if (is_child_theme()) {
+            $childThemeBasePath = get_stylesheet_directory() . '/Components';
+            Api::registerComponentsFromPath($childThemeBasePath, true);
+        }
         do_action('Flynt/afterRegisterComponents');
     }
 

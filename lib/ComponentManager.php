@@ -226,8 +226,8 @@ class ComponentManager
     {
         $componentsWithScripts = [];
         foreach ($this->components as $componentName => $component) {
-            $componentPath = str_replace('/dist/', '/', $component->getPath());
-            $relativeComponentPath = trim(str_replace(get_template_directory() . '/Components/', '', $componentPath), '/');
+            $componentPath = $component->getPath();
+            $relativeComponentPath = $component->getRelativePath();
             if (file_exists($componentPath . '/script.js')) {
                 $componentsWithScripts[$componentName] = $relativeComponentPath;
             }
