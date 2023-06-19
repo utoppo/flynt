@@ -191,6 +191,16 @@ class ComponentManager
     }
 
     /**
+     * Get all components with their properties from the internal list (array).
+     *
+     * @return array
+     */
+    public function getAllWithProperties()
+    {
+        return $this->components;
+    }
+
+    /**
      * Remove all components from the internal list (array).
      *
      * @return void
