@@ -30,7 +30,7 @@ class Defaults
     public static function loadFunctionsFile(string $componentName)
     {
         $componentManager = ComponentManager::getInstance();
-        $functionsFilePath = $componentManager->getComponentFilePath($componentName, 'functions.php');
+        $functionsFilePath = $componentManager->get($componentName)->getFilePath('functions.php');
         if (false !== $functionsFilePath) {
             require_once $functionsFilePath;
         }

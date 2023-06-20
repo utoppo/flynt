@@ -88,47 +88,6 @@ class ComponentManager
         return true;
     }
 
-    /**
-     * Get the path to a component file.
-     *
-     * @param string $componentName The name of the component.
-     * @param string $fileName The name of the file.
-     *
-     * @return string|boolean
-     */
-    public function getComponentFilePath(string $componentName, string $fileName = 'index.php')
-    {
-        $componentDir = $this->getComponentDirPath($componentName);
-
-        if (false === $componentDir) {
-            return false;
-        }
-
-        // Dir path already has a trailing slash.
-        $filePath = $componentDir . $fileName;
-
-        return is_file($filePath) ? $filePath : false;
-    }
-
-    /**
-     * Get the path to a component directory.
-     *
-     * @param string $componentName The name of the component.
-     *
-     * @return string|boolean
-     */
-    public function getComponentDirPath(string $componentName)
-    {
-        $dirPath = $this->get($componentName)->getPath();
-
-        // Check if dir exists.
-        if (!is_dir($dirPath)) {
-            return false;
-        }
-
-        return $dirPath;
-    }
-
    /**
     * Add a component to the internal list (array).
     *
@@ -221,7 +180,7 @@ class ComponentManager
     {
         foreach ($this->components as $component) {
             if ($component->getName() === $componentName) {
-                return true;
+                return $component->isRegistered();
             }
         }
         return false;
