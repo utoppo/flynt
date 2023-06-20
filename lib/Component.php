@@ -102,6 +102,57 @@ class Component implements \JsonSerializable
     }
 
     /**
+     * Get the path of the component, if directory exists.
+     *
+     * @return string|boolean
+     */
+    public function getDirPath()
+    {
+        if (!is_dir($this->getPath())) {
+            return false;
+        }
+        return $this->getPath();
+    }
+
+    /**
+     * Get the absolute file path of the template file, if file exists.
+     *
+     * @param string $templateFilename The filename of the twig-template.
+     *
+     * @return string|boolean
+     */
+    public function getFilePath(string $templateFilename)
+    {
+        if (!$this->getDirPath()) {
+            return false;
+        }
+
+        // Dir path already has a trailing slash.
+        $filePath = $this->getDirPath() . $templateFilename;
+
+        return is_file($filePath) ? $filePath : false;
+    }
+
+    /**
+     * Get the relative file path of the template file, if file exists.
+     *
+     * @param string $templateFilename The filename of the twig-template.
+     *
+     * @return string|boolean
+     */
+    public function getRelativeFilePath(string $templateFilename)
+    {
+        $filePath = $this->getFilePath($templateFilename);
+        if (!$filePath) {
+            return false;
+        }
+        $themePath = $this->getThemePath();
+        $relativeFilePath = ltrim(str_replace($themePath, '', $filePath), '/');
+
+        return $relativeFilePath;
+    }
+
+    /**
      * Get the name of the component.
      *
      * @return string
