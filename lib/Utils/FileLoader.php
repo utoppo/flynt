@@ -55,18 +55,20 @@ class FileLoader
      *
      * @return void
      */
-    public static function loadPhpFiles(string $dir, array $files = [])
+    public static function loadPhpFiles(string $dir, array $files = [], ?bool $loadFromChildTheme = false)
     {
         $dir = trim($dir, '/');
 
         if (count($files) === 0) {
-            $dir = get_template_directory() . '/' . $dir;
+            $themeDir = $loadFromChildTheme? get_stylesheet_directory() : get_template_directory();
+
+            $dir = $themeDir . '/' . $dir ;
             $phpFiles = [];
 
-            self::iterateDir($dir, function ($file) use (&$phpFiles) {
+            self::iterateDir($dir, function ($file) use (&$phpFiles, &$themeDir, &$loadFromChildTheme) {
                 if ($file->isDir()) {
-                    $dirPath = trim(str_replace(get_template_directory(), '', $file->getPathname()), '/');
-                    self::loadPhpFiles($dirPath);
+                    $dirPath = trim(str_replace($themeDir, '', $file->getPathname()), '/');
+                    self::loadPhpFiles($dirPath, [], $loadFromChildTheme);
                 } elseif ($file->isFile() && $file->getExtension() === 'php') {
                     $filePath = $file->getPathname();
                     $phpFiles[] = $filePath;

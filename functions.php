@@ -17,6 +17,9 @@ if (!defined('WP_ENV')) {
 // plugin-inactive.php instead and shows a warning in the admin backend.
 if (Init::checkRequiredPlugins()) {
     FileLoader::loadPhpFiles('inc');
+    if (is_child_theme()) {
+        FileLoader::loadPhpFiles('inc', [], true);
+    }
     add_action('after_setup_theme', ['Flynt\Init', 'initTheme']);
     add_action('after_setup_theme', ['Flynt\Init', 'loadComponents'], 101);
 }
