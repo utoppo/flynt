@@ -10,6 +10,13 @@ use DirectoryIterator;
 class FileLoader
 {
     /**
+     * Array of already loaded relative filepaths.
+     *
+     * @var static array $loadedFiles
+     */
+    private static $loadedFiles = [];
+
+    /**
      * Iterates through a directory and executes the provided callback function
      * on each file or folder in the directory (excluding dot files).
      *
@@ -79,7 +86,13 @@ class FileLoader
             // Sort files alphabetically.
             sort($phpFiles);
             foreach ($phpFiles as $phpFile) {
-                require_once $phpFile;
+                $fileRelative = trim(str_replace($themeDir, '', $phpFile), '/');
+                if (!in_array($fileRelative, self::$loadedFiles)) {
+                    require_once $phpFile;
+                    $loadedFilesFlipped = array_flip(self::$loadedFiles);
+                    $loadedFilesFlipped[$fileRelative] = 1;
+                    self::$loadedFiles = array_keys($loadedFilesFlipped);
+                }
             }
         } else {
             sort($files);
