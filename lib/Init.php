@@ -22,10 +22,10 @@ class Init
         Defaults::init();
         Options::init();
         Timber\Timber::init();
-        Timber::$locations = array(
+        Timber::$locations = [
             get_stylesheet_directory(),
             get_template_directory()
-        );
+        ];
 
         // Fronted related actions.
         if (!is_admin()) {
