@@ -52,6 +52,7 @@ class FileLoader
      *
      * @param string $dir Directory to search through.
      * @param array $files Optional array of files to include. If this is set, only the files specified will be loaded.
+     * @param boolean $loadFromChildTheme  Are the files to be loaded located inside a child theme.
      *
      * @return void
      */
@@ -60,7 +61,7 @@ class FileLoader
         $dir = trim($dir, '/');
 
         if (count($files) === 0) {
-            $themeDir = $loadFromChildTheme? get_stylesheet_directory() : get_template_directory();
+            $themeDir = $loadFromChildTheme ? get_stylesheet_directory() : get_template_directory();
 
             $dir = $themeDir . '/' . $dir ;
             $phpFiles = [];
